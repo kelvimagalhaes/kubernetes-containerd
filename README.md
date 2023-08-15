@@ -101,3 +101,47 @@ BA125L - Node K8S Control-Plane
 BA126L - Node K8S Worker
 BA127L - Node K8S Worker
 ```
+## Instalação
+
+- Agora vamos para o passo a passo da instalação
+
+## Instalando os pacotes do Kubernetes
+
+- Vamos desativar a utilização de swap no sistema. Isso é necessário porque o Kubernetes não trabalha bem com swap ativado:
+
+```
+sudo swapoff -a
+```
+
+- Vamos carregar os módulos do kernel necessários para o funcionamento do kubernetes
+
+## Carregando os módulos do kernel
+
+```
+~#cat <<EOF | sudo tee /etc/modules-load.d/k8s.conf
+overlay
+br_netfilter
+EOF
+sudo modprobe overlay
+sudo modprobe br_netfilter
+```
+
+## Configurando parâmetros do sistema
+
+- Configuração dos parâmetros do sysctl, fica mantido mesmo com reboot da máquina.
+
+  ```
+~#cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
+net.bridge.bridge-nf-call-iptables  = 1
+net.bridge.bridge-nf-call-ip6tables = 1
+net.ipv4.ip_forward                 = 1
+EOF
+
+# Aplica as definições do sysctl sem reiniciar a máquina
+~#sysctl --system
+  ```
+
+## Instalação
+
+- Pacotes do Kubernetes
+
