@@ -539,3 +539,37 @@ Agora que o próximo passo é incluir os worker nodes no cluster, pra isso no ou
 **IMPORTANTE: firewall ---> Deve ser liberada as portas TCP 6783 e UDP 6783/6784 para o Weave Net**
 
 Agora sim, o cluster Kubernetes instalado e funcionando. Segue a imagem dos NODES e NAMESPACES;
+
+![Captura de tela de 2023-08-15 16-36-12](https://github.com/kelvimagalhaes/kubernetes-containerd/assets/69023011/afe8875e-b693-4dfc-a845-9dee23756679)
+
+Antes de mais nada, acho interessante abordar os métodos de serviços para que quando começarmos a colocar a mão na massa, não fique difícil a compreensão. Lembrando que todo o laboratório será gerenciado através do serviço LoadBalancer.
+
+# Services
+
+Os Services no Kubernetes são uma abstração que define um conjunto lógico de Pods e uma política para acessá-los. Eles permitem que você exponha uma ou mais Pods para serem acessados por outros Pods, independentemente de onde eles estejam em execução no cluster.
+
+Os Services são definidos usando a API do Kubernetes, normalmente através de um arquivo de manifesto YAML.
+
+# Tipos de Services
+
+Existem quatro tipos principais de Services:
+
+- ClusterIP (padrão): Expõe o Service em um IP interno no cluster. Este tipo torna o Service acessível apenas dentro do cluster.
+
+- NodePort: Expõe o Service na mesma porta de cada Node selecionado no cluster usando NAT. Torna o Service acessível de fora do cluster usando :.
+
+- LoadBalancer: Cria um balanceador de carga externo no ambiente de nuvem atual (se suportado) e atribui um IP fixo, externo ao cluster, ao Service.
+
+- ExternalName: Mapeia o Service para o conteúdo do campo externalName (por exemplo, foo.bar.example.com), retornando um registro CNAME com seu valor.
+
+# Como os Services funcionam
+
+Os Services no Kubernetes fornecem uma abstração que define um conjunto lógico de Pods e uma política para acessá-los. Os conjuntos de Pods são determinados por meio de seletores de rótulo (Label Selectors). Embora cada Pod tenha um endereço IP único, esses IPs não são expostos fora do cluster sem um serviço.
+
+Sempre é bom reforçar a importância dos Labels no Kubernetes, pois eles são a base para a maioria das operações no Kubernetes, então vamos tratar com carinho as Labels.
+
+# Dica de OURO !!!
+
+Página que ajudou muito durante o curso foi a https://kubernetes.io/pt-br/docs/reference/kubectl/cheatsheet/ . Com ela ficou mais fácil gerenciar o cluster, também descobrir o que cada comando faz por debaixo dos panos. Verdadeiro canivete suíço !!!!
+
+Se estiver com dúvida sobre a apiVersion de cada manifesto, através do comando kubectl api-resources terá todas as respostas.
