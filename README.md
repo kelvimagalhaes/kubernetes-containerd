@@ -130,18 +130,52 @@ sudo modprobe br_netfilter
 
 - Configuração dos parâmetros do sysctl, fica mantido mesmo com reboot da máquina.
 
-  ```
+```
 ~#cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
 net.bridge.bridge-nf-call-iptables  = 1
 net.bridge.bridge-nf-call-ip6tables = 1
 net.ipv4.ip_forward                 = 1
 EOF
 
+
 # Aplica as definições do sysctl sem reiniciar a máquina
 ~#sysctl --system
-  ```
+```
 
 ## Instalação
 
 - Pacotes do Kubernetes
 
+```
+~#apt update && apt-get install apt-transport-https curl gnupg2
+~#curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+~#touch /etc/apt/sources.list.d/k8s.list
+~#echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" > /etc/apt/sources.list.d/k8s.list
+~#apt-get update && apt-get install -y kubeadm kubectl kubelet
+
+OBS: Escolher versão específica do pacote ;
+~#apt list --all-versions "pacote" 
+
+EX:
+apt-get install kubectl=1.26.0-00 kubeadm=1.26.0-00 kubelet=1.26.0-00
+```
+
+- Comando para que não atualize os pacotes abaixo de forma automática e quebre nosso cluster.
+
+```
+~#apt-mark hold kubelet kubeadm kubectl
+```
+
+## Instalando Container Runtime (Containerd)
+
+O primeiro passo, é instalar em TODAS as máquinas o container runtime, ou seja, quem vai executar os containers solicitados pelo kubelet. Aqui o container runtime utilizado é o Containerd, mas você também pode usar o Docker e o CRI-O.
+
+OBS: A partir da versão 1.26 do Kubernetes, foi removido o suporte ao CRI v1alpha2 e ao Containerd 1.5. E até o momento, o repositório oficial do debian não tem o Containerd 1.6, então precisamos usar o repositório do Docker pra instalar o ContainerD.
+
+https://kubernetes.io/blog/2022/12/09/kubernetes-v1-26-release/#cri-v1alpha2-removed
+
+- Instalando pacotes necessários
+
+```
+~#apt-get install lsb-release ca-certificates sudo software-properties-common
+```
