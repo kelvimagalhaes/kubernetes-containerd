@@ -46,3 +46,46 @@ O **kube-proxy**, que é o componente responsável fazer ser possível que os po
 
 Todos os **pods** de nossas aplicações.
 
+## Instalação do Kubeadm
+
+Nós iremos realizar a instalação do Kubernetes utilizando o kubeadm, que é uma das formas mais antigas para a criação de um cluster Kubernetes. Mas existem outras formas de instalar o Kubernetes, vou detalhar algumas delas aqui:
+
+kubeadm: É uma ferramenta para criar e gerenciar um cluster Kubernetes em vários nós. Ele automatiza muitas das tarefas de configuração do cluster, incluindo a instalação do control plane e dos nodes. É altamente configurável e pode ser usado para criar clusters personalizados.
+
+Kubespray: É uma ferramenta que usa o Ansible para implantar e gerenciar um cluster Kubernetes em vários nós. Ele oferece muitas opções para personalizar a instalação do cluster, incluindo a escolha do provedor de rede, o número de réplicas do control plane, o tipo de armazenamento e muito mais. É uma boa opção para implantar um cluster em vários ambientes, incluindo nuvens públicas e privadas.
+
+Cloud Providers: Muitos provedores de nuvem, como AWS, Google Cloud Platform e Microsoft Azure, oferecem opções para implantar um cluster Kubernetes em sua infraestrutura. Eles geralmente fornecem modelos predefinidos que podem ser usados para implantar um cluster com apenas alguns cliques. Alguns provedores de nuvem também oferecem serviços gerenciados de Kubernetes que lidam com toda a configuração e gerenciamento do cluster.
+
+Kubernetes Gerenciados: São serviços gerenciados oferecidos por alguns provedores de nuvem, como Amazon EKS, o GKE do Google Cloud e o AKS, da Azure. Eles oferecem um cluster Kubernetes gerenciado onde você só precisa se preocupar em implantar e gerenciar seus aplicativos. Esses serviços lidam com a configuração, atualização e manutenção do cluster para você. Nesse caso, você não tem que gerenciar o control plane do cluster, pois ele é gerenciado pelo provedor de nuvem.
+
+Kops: É uma ferramenta para implantar e gerenciar clusters Kubernetes na nuvem. Ele foi projetado especificamente para implantação em nuvens públicas como AWS, GCP e Azure. Kops permite criar, atualizar e gerenciar clusters Kubernetes na nuvem. Algumas das principais vantagens do uso do Kops são a personalização, escalabilidade e segurança. No entanto, o uso do Kops pode ser mais complexo do que outras opções de instalação do Kubernetes, especialmente se você não estiver familiarizado com a nuvem em que está implantando.
+
+Minikube e kind: São ferramentas que permitem criar um cluster Kubernetes localmente, em um único nó. São úteis para testar e aprender sobre o Kubernetes, pois você pode criar um cluster em poucos minutos e começar a implantar aplicativos imediatamente. Elas também são úteis para pessoas desenvolvedoras que precisam testar suas aplicações em um ambiente Kubernetes sem precisar configurar um cluster em um ambiente de produção.
+
+Existem diversas formar de criar um cluster K8S, aqui, o objetivo vai ser criar o cluster de forma on-premisse utilizando o kubeadm. O kubeadm é uma ferramenta com o objetivo de facilitar a criação de um cluster K8S padrão, que segue todos os requisitos de um cluster certificado. Ou seja, vamos ter o básico de um cluster K8S validado pela Cloud Native Computing Foundation. Mas também vamos usar o kubeadm pra alguns processos de manutenção do cluster, como renovação de certificados e atualizações do cluster. Podemos utilizar o kubeadm em qualquer abordagem onpremisse de uso do K8S, seja máquinas virtuais, máquinas baremetal e até mesmo Raspberry Pi.
+
+## Setup do Ambiente
+
+Vamos criar um cluster Kubernetes utilizando 3 máquinas, uma máquina vai ter o papel de Control Plane e as outras duas de Worker Nodes. Lembrando que dessa forma eu não estou criando um cluster com alta disponibilidade ou HA. Pois eu tenho apenas um control plane e caso ele fique fora do ar, o cluster vai ficar inoperável. Por isso usaremos esse ambiente apenas para estudo. NUNCA em PRODUÇÃO
+
+## Requisitos da Instalação
+
+Abaixo segue os requisitos mínimos pra cada máquina:
+
+- Máquina Linux (aqui no caso vou utilizar Debian 11)
+- 2 GB de memória RAM
+- 2 CPUs
+- Conexão de rede entre as máquinas
+- Hostname, endereço MAC e product_uuid únicos pra cada nó.
+- Swap desabilitado
+- 
+
+**Certas portas terão que ser liberadas caso os servidores não estejam no mesmo enlace de rede;**
+
+- Porta 6443: É a porta padrão usada pelo Kubernetes API Server para se comunicar com os componentes do cluster. É a porta principal usada para gerenciar o cluster e deve estar sempre aberta.
+
+- Portas 10250-10255: Essas portas são usadas pelo kubelet para se comunicar com o control plane do Kubernetes. A porta 10250 é usada para comunicação de leitura/gravação e a porta 10255 é usada apenas para comunicação de leitura.
+
+- Porta 30000-32767: Essas portas são usadas para serviços NodePort que precisam ser acessíveis fora do cluster. O Kubernetes aloca uma porta aleatória dentro desse intervalo para cada serviço NodePort e redireciona o tráfego para o pod correspondente.
+
+- Porta 2379-2380: Essas portas são usadas pelo etcd, o banco de dados de chave-valor distribuído usado pelo control plane do Kubernetes. A porta 2379 é usada para comunicação de leitura/gravação e a porta 2380 é usada apenas para comunicação de eleição.
