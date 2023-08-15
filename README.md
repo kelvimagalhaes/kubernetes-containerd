@@ -89,3 +89,15 @@ Abaixo segue os requisitos mínimos pra cada máquina:
 - Porta 30000-32767: Essas portas são usadas para serviços NodePort que precisam ser acessíveis fora do cluster. O Kubernetes aloca uma porta aleatória dentro desse intervalo para cada serviço NodePort e redireciona o tráfego para o pod correspondente.
 
 - Porta 2379-2380: Essas portas são usadas pelo etcd, o banco de dados de chave-valor distribuído usado pelo control plane do Kubernetes. A porta 2379 é usada para comunicação de leitura/gravação e a porta 2380 é usada apenas para comunicação de eleição.
+
+![Portas-Default](https://github.com/kelvimagalhaes/kubernetes-containerd/assets/69023011/d0151d15-6703-4b0b-86e5-c1540f356f32)
+
+Além dessas portas, é preciso ter a porta do Container Network Interface(CNI) aberta também, mas isso vária pra cada solução. Aqui no caso, vamos usar o Weave Net, as portas que é preciso liberar são as UDP 6783/6784 , TCP 6783.
+
+- O cluster será implementado nos seguintes servidores;
+
+```
+BA125L - Node K8S Control-Plane
+BA126L - Node K8S Worker
+BA127L - Node K8S Worker
+```
