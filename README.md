@@ -97,9 +97,9 @@ Além dessas portas, é preciso ter a porta do Container Network Interface(CNI) 
 - O cluster será implementado nos seguintes servidores;
 
 ```
-BA125L - Node K8S Control-Plane
-BA126L - Node K8S Worker
-BA127L - Node K8S Worker
+NODE-MASTER - Node K8S Control-Plane
+NODE-WORKER1 - Node K8S Worker
+NODE-WORKER2 - Node K8S Worker
 ```
 ## Instalação
 
@@ -380,7 +380,7 @@ version = 2
 
       [plugins."io.containerd.grpc.v1.cri".registry.auths]
 
-      [plugins."io.containerd.grpc.v1.cri".registry.configs."registry.campogrande.ms.gov.br".auth]
+      [plugins."io.containerd.grpc.v1.cri".registry.configs." **registryprivado.com.br** ".auth]
             auth = "amVua2luc19sb2NhbDpFbWNBdGo=" 
 
       [plugins."io.containerd.grpc.v1.cri".registry.headers]
