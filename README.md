@@ -501,7 +501,7 @@ version = 2
 ~#kubeadm init
 
 OBS: Recomendo especificar a rede em que o cluster irá trabalhar. EX;
-~#kubeadm init --pod-network-cidr=50.50.0.0/16 --apiserver-advertise-address=10.0.0.125
+~#kubeadm init --pod-network-cidr=50.50.0.0/16 --apiserver-advertise-address=192.168.0.100
 ~#kubeadm init --pod-network-cidr=50.50.0.0/16 --upload-certs --kubernetes-version=v1.26.0 --cri-socket unix:///run/containerd/containerd.sock
 ```
 
