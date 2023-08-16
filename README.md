@@ -380,14 +380,14 @@ version = 2
 
       [plugins."io.containerd.grpc.v1.cri".registry.auths]
 
-      [plugins."io.containerd.grpc.v1.cri".registry.configs." **registryprivado.com.br** ".auth]
+      [plugins."io.containerd.grpc.v1.cri".registry.configs."registryprivado.com.br".auth]
             auth = "amVua2luc19sb2NhbDpFbWNBdGo=" 
 
       [plugins."io.containerd.grpc.v1.cri".registry.headers]
 
       [plugins."io.containerd.grpc.v1.cri".registry.mirrors]
-        [plugins."io.containerd.grpc.v1.cri".registry.mirrors."registry.campogrande.ms.gov.br"]
-          endpoint = ["https://registry.campogrande.ms.gov.br"]
+        [plugins."io.containerd.grpc.v1.cri".registry.mirrors."registryprivado.com.br"]
+          endpoint = ["https://registryprivado.com.br"]
     [plugins."io.containerd.grpc.v1.cri".x509_key_pair_streaming]
       tls_cert_file = "" 
       tls_key_file = "" 
